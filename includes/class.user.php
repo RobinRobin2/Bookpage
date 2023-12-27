@@ -22,6 +22,7 @@ public function login(){
 	//Bygg query som hämtar ut en rad ur databasen ifall användarnamnet finns
 	$stmt_checkIfUserExists = $this->conn->prepare("SELECT * FROM table_admin WHERE Admin_username = :uname");
 	$stmt_checkIfUserExists->bindValue(":uname", $usernameEmail, PDO::PARAM_STR);
+	
 	$stmt_checkIfUserExists->execute();
 	//Skapa array av infon som hämtats
 	$userNameMatch = $stmt_checkIfUserExists->fetch();
@@ -54,7 +55,26 @@ public function login(){
 			return false;
 		}
 	}
-	
+
+	public function checkUserRole($req){
+		$stmt_checkRoleLevel = $this->conn->prepare("SELECT * FROM table_roles WHERE Role_id = :urole");
+		$stmt_checkRoleLevel->bindValue(":urole", $_SESSION['urole'], PDO::PARAM_STR);
+		$stmt_checkRoleLevel->execute();
+		$currentUserRoleInfo = $stmt_checkRoleLevel->fetch();
+		
+		if($currentUserRoleInfo["Role_level"] >= $req){
+			return true;
+		}
+		else {
+			return false;
+		}
+		
+	}
+
+	public function redirect($url){
+		header("Location: ".$url);
+		exit();
+	}
 
 
 	public function register(){
@@ -77,10 +97,7 @@ public function login(){
 		}	
 	}
 
-	public function redirect($url){
-		header("Location: ".$url);
-		exit();
-	}
+
 
 }
 

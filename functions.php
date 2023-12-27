@@ -28,6 +28,17 @@ function createBook($conn, $title, $description, $author, $illustrator, $languag
 	}
 
 
+    function createCategory($conn, $category){
+		
+		$stmt_insertCategory = $conn->prepare("INSERT INTO table_categories (Category_name) VALUES (:category)");
+		$stmt_insertCategory->bindParam(':category', $category, PDO::PARAM_STR);
+
+		$stmt_insertCategory->execute();
+		
+	}
+
+
+
     function fetchAgerecommendations($conn){
         $agerecommendationFetch = $conn->prepare('SELECT * 
         FROM table_agerecom');

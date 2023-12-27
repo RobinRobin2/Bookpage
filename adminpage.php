@@ -3,8 +3,23 @@
 	include_once "header.php"; 
     include_once "functions.php"; 
     include "includes/fileupload.php";
+    if($user->checkLoginStatus()){
+        if(!$user->checkUserRole(10)){
+            $user->redirect("index.php");
+        }
+    }
+    
+    else{
+        $user->redirect("adminpage.php");
+    }
+    
     if(isset($_POST['form-submit'])){
 		createBook($conn, $_POST['titel'], $_POST['description'], $_POST['author'], $_POST['illustrator'],$_POST['language'],$_POST['pubyear'],$_POST['numofpages'],$_POST['price'],$_FILES['cover']['name'],$_POST['bcategory'],$_POST['bgenre'],$_POST['bseries'], $_POST['bagerecom'],$_POST['bpublisher'], 1);
+
+	}
+
+    if(isset($_POST['category-submit'])){
+		createCategory($conn, $_POST['category']);
 
 	}
 //check if form has been sent
@@ -25,17 +40,19 @@ if(isset($_POST['submit_register'])){
  
 ?>
 
-
-<form method="post" action="" enctype="multipart/form-data">
-	<h3>Skapa bok</h3>
-	<label for="titel">Titel:</label><br />
-	<input type="text" id="titel" placeholder="" name="titel" required="required"><br />
-	<label for="description">Beskrivning:</label><br />
-	<input type="text" id="description" placeholder="" name="description" required="required"><br />
-	<label for="author">Författare:</label><br />
-	<input type="text" id="author" placeholder="" name="author" required="required"><br />	
-	<label for="illustrator">Illustratör:</label><br />
-	<input type="text" id="illustrator" placeholder="" name="illustrator" required="required"><br />
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+        <form method="post" action="" enctype="multipart/form-data">
+	    <h3>Skapa bok</h3>
+	    <label for="titel">Titel:</label><br />
+	    <input type="text" id="titel" placeholder="" name="titel" required="required"><br />
+	    <label for="description">Beskrivning:</label><br />
+	    <input type="text" id="description" placeholder="" name="description" required="required"><br />
+	    <label for="author">Författare:</label><br />
+	    <input type="text" id="author" placeholder="" name="author" required="required"><br />	
+	    <label for="illustrator">Illustratör:</label><br />
+	    <input type="text" id="illustrator" placeholder="" name="illustrator" required="required"><br />
 
 
  
@@ -134,8 +151,17 @@ if(isset($_POST['submit_register'])){
     <input type="submit" name="form-submit" value="Skicka">
 
 </form>
-
-
+        </div>
+        <div class="col-6">
+            <form method="post" action="" enctype="multipart/form-data">
+            <h3>Skapa kategori</h3>
+            <label for="category">Namn:</label><br />
+	        <input type="text" id="category" placeholder="" name="category" required="required"><br />
+            <input type="submit" name="category-submit" value="Skicka">
+             </form>
+        </div>
+     </div>
+</div>
 
 <div id="content">
 	<div class="content-inner">
