@@ -1,10 +1,11 @@
 <?php
 	include_once "includes/config.php";
+  include_once "includes/class.user.php";
 	?>
 <!DOCTYPE html>
 <html>
 <head>
-<title>Boka massage</title> <!-- Titel som syns uppe i "tabben" -->
+<title>Bookpage</title> <!-- Titel som syns uppe i "tabben" -->
 <link rel="stylesheet" href="css/styles.css"> <!-- Länka in CSS-filen -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -21,7 +22,7 @@
 
 
 <nav class="navbar navbar-expand-lg navbar-light" id="test0">
-  <a class="navbar-brand mx-5" href="#">Bokhandel AB</a>
+  <a class="navbar-brand mx-5" href="index.php">Bokhandel AB</a>
   
 
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -31,10 +32,10 @@
     <ul class="navbar-nav">
 
     <li class="nav-item">
-        <a class="nav-link" href="#">Logga in</a>
+        <a class="nav-link" href="adminlogin.php">Logga in</a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" href="#">Hem <span class="sr-only"></span></a>
+        <a class="nav-link" href="index.php">Hem <span class="sr-only"></span></a>
       </li>
       <li class="nav-item" id="test2">
         <a class="nav-link" href="#">Böcker</a>
