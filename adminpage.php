@@ -22,6 +22,47 @@
 		createCategory($conn, $_POST['category']);
 
 	}
+
+    if(isset($_POST['genre-submit'])){
+		createGenre($conn, $_POST['genre']);
+
+	}
+
+    if(isset($_POST['serie-submit'])){
+		createSerie($conn, $_POST['serie']);
+
+	}
+
+    if(isset($_POST['agerecom-submit'])){
+		createAgerecom($conn, $_POST['agerecom']);
+
+	}
+    if(isset($_POST['publisher-submit'])){
+		createPublisher($conn, $_POST['publisher']);
+
+	}
+
+
+    $searchErr = '';
+    $book_details='';
+    if(isset($_POST['save']))
+    {
+        if(!empty($_POST['search']))
+        {
+            $search = $_POST['search'];
+            $stmt = $conn->prepare("select * from table_books where Book_title like '%$search%'");
+            $stmt->execute();
+            $book_details = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            //print_r($employee_details);
+            
+        }
+        else
+        {
+            $searchErr = "Please enter the information";
+        }
+       
+    }
+
 //check if form has been sent
 if(isset($_POST['submit_register'])){
     //Function returns success or error message that is saved in $checkReturn.
@@ -159,9 +200,70 @@ if(isset($_POST['submit_register'])){
 	        <input type="text" id="category" placeholder="" name="category" required="required"><br />
             <input type="submit" name="category-submit" value="Skicka">
              </form>
+             <form method="post" action="" enctype="multipart/form-data">
+             <h3>Skapa genre</h3>
+             <label for="genre">Namn:</label><br />
+	        <input type="text" id="genre" placeholder="" name="genre" required="required"><br />
+            <input type="submit" name="genre-submit" value="Skicka">
+        </form>
+        <form method="post" action="" enctype="multipart/form-data">
+             <h3>Skapa serie</h3>
+             <label for="serie">Namn:</label><br />
+	        <input type="text" id="serie" placeholder="" name="serie" required="required"><br />
+            <input type="submit" name="serie-submit" value="Skicka">
+        </form>
+        <form method="post" action="" enctype="multipart/form-data">
+             <h3>Skapa Åldersrekommendation</h3>
+             <label for="agerecom">Rekommendation:</label><br />
+	        <input type="text" id="agerecom" placeholder="" name="agerecom" required="required"><br />
+            <input type="submit" name="agerecom-submit" value="Skicka">
+        </form>
+        <form method="post" action="" enctype="multipart/form-data">
+             <h3>Skapa Förlag</h3>
+             <label for="publisher">Namn:</label><br />
+	        <input type="text" id="publisher" placeholder="" name="publisher" required="required"><br />
+            <input type="submit" name="publisher-submit" value="Skicka">
+        </form>
         </div>
      </div>
 </div>
+
+<form class="form-horizontal" action="#" method="post">
+	<div class="row">
+		<div class="form-group">
+		    <label class="control-label col-sm-4" for="email"><b>Sök en bok:</b>:</label>
+		    <div class="col-sm-4">
+		      <input type="text" class="form-control" name="search" placeholder="search here">
+		    </div>
+		    <div class="col-sm-2">
+		      <button type="submit" name="save" class="btn btn-success btn-sm">Submit</button>
+		    </div>
+		</div>
+		<div class="form-group">
+			<span class="error" style="color:red;">* <?php echo $searchErr;?></span>
+		</div>
+		
+	</div>
+    </form>
+
+    <?php
+		    	 if(!$book_details)
+		    	 {
+		    		echo '<tr>No data found</tr>';
+		    	 }
+		    	 else{
+		    	 	foreach($book_details as $key=>$value)
+		    	 	{
+		    	 		?>
+		    	 	<tr>
+		    	 		<td><?php echo $key+1;?></td>
+		    	 		<td><?php echo $value['Book_title'];?></td>
+		    	 	</tr>
+                    
+		    	 		<?php
+                    }
+                }
+                ?>
 
 <div id="content">
 	<div class="content-inner">

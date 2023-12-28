@@ -37,6 +37,42 @@ function createBook($conn, $title, $description, $author, $illustrator, $languag
 		
 	}
 
+    function createGenre($conn, $genre){
+		
+		$stmt_insertGenre = $conn->prepare("INSERT INTO table_genre (Genre_name) VALUES (:genre)");
+		$stmt_insertGenre->bindParam(':genre', $genre, PDO::PARAM_STR);
+
+		$stmt_insertGenre->execute();
+		
+	}
+
+    function createSerie($conn, $serie){
+		
+		$stmt_insertSerie = $conn->prepare("INSERT INTO table_series (Series_name) VALUES (:serie)");
+		$stmt_insertSerie->bindParam(':serie', $serie, PDO::PARAM_STR);
+
+		$stmt_insertSerie->execute();
+		
+	}
+
+    function createAgerecom($conn, $agerecom){
+		
+		$stmt_insertAgerecom = $conn->prepare("INSERT INTO table_agerecom (Agerecom_name) VALUES (:agerecom)");
+		$stmt_insertAgerecom->bindParam(':agerecom', $agerecom, PDO::PARAM_STR);
+
+		$stmt_insertAgerecom->execute();
+		
+	}
+
+    function createPublisher($conn, $publisher){
+		
+		$stmt_insertPublisher = $conn->prepare("INSERT INTO table_publisher (Publisher_name) VALUES (:publisher)");
+		$stmt_insertPublisher->bindParam(':publisher', $publisher, PDO::PARAM_STR);
+
+		$stmt_insertPublisher->execute();
+		
+	}
+
 
 
     function fetchAgerecommendations($conn){
