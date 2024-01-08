@@ -2,9 +2,43 @@
 
 <?php
 
-function createBook($conn, $title, $description, $author, $illustrator, $language, $pubyear, $numofpages, $price, $cover, $bcategory, $bgenre, $bseries, $bagerecom,  $bpublisher, $status){
+include 'includes/config.php';
+
+
+
+
+
+
+
+function selectBooks($conn, $amount){
+    $amount=intval($amount);
+    $selectedBooks = $conn->prepare('SELECT * FROM table_books 
+    INNER JOIN table_categories ON table_books.Book_category_fk = table_categories.Category_id
+    ORDER BY Book_created DESC
+     LIMIT :amount');	
+    $selectedBooks->bindParam(':amount', $amount, PDO::PARAM_INT);
+    $selectedBooks->execute();
+    return $selectedBooks;
+}
+
+
+function selectFeaturedBooks($conn, $amount){
+    $amount=intval($amount);
+    $selectedFeaturedBooks = $conn->prepare('SELECT * FROM table_books 
+    INNER JOIN table_categories ON table_books.Book_category_fk = table_categories.Category_id
+    WHERE Book_featured = 1
+    ORDER BY Book_created DESC
+     LIMIT :amount ');	
+    $selectedFeaturedBooks->bindParam(':amount', $amount, PDO::PARAM_INT);
+    $selectedFeaturedBooks->execute();
+    return $selectedFeaturedBooks;
+}
+
+
+function createBook($conn, $title, $description, $author, $illustrator, $language, $pubyear, $numofpages, $price, $cover, $bcategory, $bgenre, $bseries, $bagerecom,  $bpublisher, $featured, $rating){
 		
-		$stmt_insertBook = $conn->prepare("INSERT INTO table_books (Book_title, Book_description, Book_author_fk, Book_illustrator_fk, Book_language_fk, Book_pubyear, Book_numofpages, Book_price, Book_cover, Book_category_fk, Book_genre_fk, Book_series_fk, Book_agerecom_fk, Book_publisher_fk, Book_status_fk) VALUES (:title, :description, :author, :illustrator, :language, :pubyear, :numofpages, :price, :cover, :bcategory, :bgenre, :bseries, :bagerecom, :bpublisher, :status)");
+        
+		$stmt_insertBook = $conn->prepare("INSERT INTO table_books (Book_title, Book_description, Book_author_fk, Book_illustrator_fk, Book_language_fk, Book_pubyear, Book_numofpages, Book_price, Book_cover, Book_category_fk, Book_genre_fk, Book_series_fk, Book_agerecom_fk, Book_publisher_fk, Book_featured, Book_rating) VALUES (:title, :description, :author, :illustrator, :language, :pubyear, :numofpages, :price, :cover, :bcategory, :bgenre, :bseries, :bagerecom, :bpublisher, :featured, :rating)");
 		$stmt_insertBook->bindParam(':title', $title, PDO::PARAM_STR);
 		$stmt_insertBook->bindParam(':description', $description, PDO::PARAM_STR);
 		$stmt_insertBook->bindParam(':author', $author, PDO::PARAM_STR);
@@ -19,7 +53,8 @@ function createBook($conn, $title, $description, $author, $illustrator, $languag
 		$stmt_insertBook->bindParam(':bseries', $bseries, PDO::PARAM_STR);
 		$stmt_insertBook->bindParam(':bagerecom', $bagerecom, PDO::PARAM_STR);
         $stmt_insertBook->bindParam(':bpublisher', $bpublisher, PDO::PARAM_STR);
-		$stmt_insertBook->bindParam(':status', $status, PDO::PARAM_STR);
+		$stmt_insertBook->bindParam(':featured', $featured, PDO::PARAM_INT);
+        $stmt_insertBook->bindParam(':rating', $rating, PDO::PARAM_STR);
 		
 	
 
@@ -73,6 +108,42 @@ function createBook($conn, $title, $description, $author, $illustrator, $languag
 		
 	}
 
+
+    function createAuthor($conn, $author){
+		
+		$stmt_insertAuthor = $conn->prepare("INSERT INTO table_author (Author_name) VALUES (:author)");
+		$stmt_insertAuthor->bindParam(':author', $author, PDO::PARAM_STR);
+
+		$stmt_insertAuthor->execute();
+		
+	}
+
+
+    function createIllustrator($conn, $illustrator){
+		
+		$stmt_insertIllustrator = $conn->prepare("INSERT INTO table_illustrator (Illustrator_name) VALUES (:illustrator)");
+		$stmt_insertIllustrator->bindParam(':illustrator', $illustrator, PDO::PARAM_STR);
+
+		$stmt_insertIllustrator->execute();
+		
+	}
+
+
+    function fetchAuthor($conn){
+        $authorFetch = $conn->prepare('SELECT * 
+        FROM table_author');
+         $authorFetch->execute();
+         return $authorFetch;
+    
+    }
+
+    function fetchIllustrator($conn){
+        $illustratorFetch = $conn->prepare('SELECT * 
+        FROM table_illustrator');
+         $illustratorFetch->execute();
+         return $illustratorFetch;
+    
+    }
 
 
     function fetchAgerecommendations($conn){
@@ -141,7 +212,32 @@ function createBook($conn, $title, $description, $author, $illustrator, $languag
         $selectedSingleBook->bindParam(':id', $id, PDO::PARAM_INT);
         $selectedSingleBook->execute();
         $bookData = $selectedSingleBook->fetch();
+    
+	
         return $bookData;
     }
+
+	
+
+
+
+    function updateBook($conn, $title, $agerecomc, $authorc, $illustratorc, $categoryc, $genrec, $id){
+		
+        $stmt_insertOwner = $conn->prepare("UPDATE table_books  SET Book_title = :title, Book_agerecom_fk = :agerecomc, Book_author_fk = :authorc, Book_illustrator_fk = :illustratorc, Book_category_fk = :categoryc, Book_genre_fk = :genrec WHERE Book_id = :bid");
+        $stmt_insertOwner->bindParam(':title', $title, PDO::PARAM_STR);
+        $stmt_insertOwner->bindParam(':agerecomc', $agerecomc, PDO::PARAM_STR);
+        $stmt_insertOwner->bindParam(':authorc', $authorc, PDO::PARAM_STR);
+        $stmt_insertOwner->bindParam(':illustratorc', $illustratorc, PDO::PARAM_STR);
+        $stmt_insertOwner->bindParam(':categoryc', $categoryc, PDO::PARAM_STR);
+        $stmt_insertOwner->bindParam(':genrec', $genrec, PDO::PARAM_STR);
+        $stmt_insertOwner->bindParam(':bid', $id, PDO::PARAM_INT);
+        $stmt_insertOwner->execute();
+        
+        $insertedOwnerId = $conn->lastInsertId();
+        return $insertedOwnerId;
+    }
+
+
+
 
 ?>

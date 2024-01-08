@@ -14,7 +14,13 @@
     }
     
     if(isset($_POST['form-submit'])){
-		createBook($conn, $_POST['titel'], $_POST['description'], $_POST['author'], $_POST['illustrator'],$_POST['language'],$_POST['pubyear'],$_POST['numofpages'],$_POST['price'],$_FILES['cover']['name'],$_POST['bcategory'],$_POST['bgenre'],$_POST['bseries'], $_POST['bagerecom'],$_POST['bpublisher'], 1);
+      if(isset($_POST['featuredcheck'])){
+        $isFeatured = 1;
+      }
+      else {
+        $isFeatured = 0;
+      }
+		createBook($conn, $_POST['titel'], $_POST['description'], $_POST['author'], $_POST['illustrator'],$_POST['language'],$_POST['pubyear'],$_POST['numofpages'],$_POST['price'],$_FILES['cover']['name'],$_POST['bcategory'],$_POST['bgenre'],$_POST['bseries'], $_POST['bagerecom'],$_POST['bpublisher'], $isFeatured, $_POST['brating']);
 
 	}
 
@@ -42,6 +48,15 @@
 
 	}
 
+  if(isset($_POST['bauthor-submit'])){
+		createAuthor($conn, $_POST['bauthor']);
+
+	}
+
+  if(isset($_POST['billustrator-submit'])){
+		createIllustrator($conn, $_POST['billustrator']);
+
+	}
 
     $searchErr = '';
     $book_details='';
@@ -89,16 +104,37 @@ if(isset($_POST['submit_register'])){
 	    <label for="titel">Titel:</label><br />
 	    <input type="text" id="titel" placeholder="" name="titel" required="required"><br />
 	    <label for="description">Beskrivning:</label><br />
-	    <input type="text" id="description" placeholder="" name="description" required="required"><br />
-	    <label for="author">Författare:</label><br />
-	    <input type="text" id="author" placeholder="" name="author" required="required"><br />	
-	    <label for="illustrator">Illustratör:</label><br />
-	    <input type="text" id="illustrator" placeholder="" name="illustrator" required="required"><br />
+	    <textarea rows="7" cols="35" id="description" placeholder="" name="description" required="required"></textarea><br />
+
+	 
+
+      <label for="author">Författare:</label><br>
+      <select name="author" id="author">
+      <?php
+	    $allAuthor = fetchAuthor($conn);
+	    foreach($allAuthor as $row){
+		echo "<option value='{$row['Author_id']}'>{$row['Author_name']}</option>";
+	        }
+		?>
+    
+    </select><br>
+
+
+
+      
+    <label for="illustrator">Illustrator:</label><br>
+      <select name="illustrator" id="illustrator">
+      <?php
+	    $allIllustrator = fetchIllustrator($conn);
+	    foreach($allIllustrator as $row){
+		echo "<option value='{$row['Illustrator_id']}'>{$row['Illustrator_name']}</option>";
+	        }
+		?>
+    
+    </select><br>
 
 
  
-
-
 
     <label for="bagerecom">Åldersrekommendation</label><br>
       <select name="bagerecom" id="bagerecom">
@@ -186,6 +222,12 @@ if(isset($_POST['submit_register'])){
     <label for="price">Pris:</label><br />
 	<input type="number" id="price" placeholder="" name="price" required="required"><br />
 
+  <label for="brating">Betygsättning:</label><br />
+	<input type="text" id="brating" placeholder="" name="brating" required="required"><br />
+
+  <input type="checkbox" id="featuredcheck" name="featuredcheck" value="1" >
+  <label for="featuredcheck">Featured</label><br>
+
     <label for="cover">Pärmblad:</label><br />
 	<input type="file" name="cover" id="cover"><br>
 
@@ -224,6 +266,21 @@ if(isset($_POST['submit_register'])){
 	        <input type="text" id="publisher" placeholder="" name="publisher" required="required"><br />
             <input type="submit" name="publisher-submit" value="Skicka">
         </form>
+
+        <form method="post" action="" enctype="multipart/form-data">
+             <h3>Skapa Författare</h3>
+             <label for="bauthor">Namn:</label><br />
+	        <input type="text" id="bauthor" placeholder="" name="bauthor" required="required"><br />
+            <input type="submit" name="bauthor-submit" value="Skicka">
+        </form>
+
+        <form method="post" action="" enctype="multipart/form-data">
+             <h3>Skapa Illustratör</h3>
+             <label for="billustrator">Namn:</label><br />
+	        <input type="text" id="billustrator" placeholder="" name="billustrator" required="required"><br />
+            <input type="submit" name="billustrator-submit" value="Skicka">
+        </form>
+
         </div>
      </div>
 </div>
@@ -258,6 +315,8 @@ if(isset($_POST['submit_register'])){
 		    	 	<tr>
 		    	 		<td><?php echo $key+1;?></td>
 		    	 		<td><?php echo $value['Book_title'];?></td>
+
+                        <a href="editbook.php?bookID=<?php echo $value['Book_id'];?>" type='button'>Redigera book</a>
 		    	 	</tr>
                     
 		    	 		<?php

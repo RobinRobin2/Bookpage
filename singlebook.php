@@ -31,6 +31,7 @@ else {
       <p>Genre:<?php echo "  {$bookData['Genre_name']}";?><p>
       <p>Serie:<?php echo "  {$bookData['Series_name']}";?><p>
       <p>Åldersrekommendation:<?php echo "  {$bookData['Agerecom_name']}";?><p>
+      <p>Betygsättning:<?php echo "  {$bookData['Book_rating']}";?><p>
 
 
       </div>
