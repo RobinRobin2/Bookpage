@@ -27,7 +27,7 @@ else {
       <p>Språk:<?php echo "  {$bookData['Language_name']}";?><p>
       <p>Utgiven:<?php echo "  {$bookData['Book_pubyear']}";?><p>
       <p>Antal sidor:<?php echo "  {$bookData['Book_numofpages']}";?><p>
-      <p>Pris:<?php echo "  {$bookData['Book_price']}";?><p>
+      <p>Pris:<?php echo "  {$bookData['Book_price']}";?>€<p>
       <p>Genre:<?php echo "  {$bookData['Genre_name']}";?><p>
       <p>Serie:<?php echo "  {$bookData['Series_name']}";?><p>
       <p>Åldersrekommendation:<?php echo "  {$bookData['Agerecom_name']}";?><p>

@@ -128,22 +128,7 @@ echo "
 ?>
 </div>
 
-<section>
-<h2 id="featured-books">Featured books</h2>
-<div class="row mx-5 my-5">
-  <div class="col-sm-3">
-    <div class="card">
-      <div class="card-body">
-	  <img src="img/bookcover2.jpg" class="card-img-top" alt="...">
-        <h5 class="card-title">Mumin mamman</h5>
-        <p class="card-text">25€</p>
-		<p class="card-text">4/5</p>
-        <a href="#" class="btn btn-primary">Läs mer</a>
-      </div>
-    </div>
-  </div>
-</div>
-</section>
+
 
 <section class="my-5">
 	<div class="row mx-5 py-5">

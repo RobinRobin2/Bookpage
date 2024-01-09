@@ -221,15 +221,22 @@ function createBook($conn, $title, $description, $author, $illustrator, $languag
 
 
 
-    function updateBook($conn, $title, $agerecomc, $authorc, $illustratorc, $categoryc, $genrec, $id){
+    function updateBook($conn, $title, $agerecomc, $authorc, $illustratorc, $categoryc, $genrec, $seriesc, $languagec, $pubyearc, $publisherc, $numofpagesc, $pricec, $coverc, $id){
 		
-        $stmt_insertOwner = $conn->prepare("UPDATE table_books  SET Book_title = :title, Book_agerecom_fk = :agerecomc, Book_author_fk = :authorc, Book_illustrator_fk = :illustratorc, Book_category_fk = :categoryc, Book_genre_fk = :genrec WHERE Book_id = :bid");
+        $stmt_insertOwner = $conn->prepare("UPDATE table_books  SET Book_title = :title, Book_agerecom_fk = :agerecomc, Book_author_fk = :authorc, Book_illustrator_fk = :illustratorc, Book_category_fk = :categoryc, Book_genre_fk = :genrec, Book_series_fk = :seriesc, Book_language_fk = :languagec, Book_pubyear = :pubyearc, Book_publisher_fk = :publisherc, Book_numofpages = :numofpagesc, Book_price = :pricec, Book_cover = :coverc WHERE Book_id = :bid");
         $stmt_insertOwner->bindParam(':title', $title, PDO::PARAM_STR);
         $stmt_insertOwner->bindParam(':agerecomc', $agerecomc, PDO::PARAM_STR);
         $stmt_insertOwner->bindParam(':authorc', $authorc, PDO::PARAM_STR);
         $stmt_insertOwner->bindParam(':illustratorc', $illustratorc, PDO::PARAM_STR);
         $stmt_insertOwner->bindParam(':categoryc', $categoryc, PDO::PARAM_STR);
         $stmt_insertOwner->bindParam(':genrec', $genrec, PDO::PARAM_STR);
+        $stmt_insertOwner->bindParam(':seriesc', $seriesc, PDO::PARAM_STR);
+        $stmt_insertOwner->bindParam(':languagec', $languagec, PDO::PARAM_STR);
+        $stmt_insertOwner->bindParam(':pubyearc', $pubyearc, PDO::PARAM_INT);
+        $stmt_insertOwner->bindParam(':publisherc', $publisherc, PDO::PARAM_STR);
+        $stmt_insertOwner->bindParam(':numofpagesc', $numofpagesc, PDO::PARAM_INT);
+        $stmt_insertOwner->bindParam(':pricec', $pricec, PDO::PARAM_STR);
+        $stmt_insertOwner->bindParam(':coverc', $coverc, PDO::PARAM_STR);
         $stmt_insertOwner->bindParam(':bid', $id, PDO::PARAM_INT);
         $stmt_insertOwner->execute();
         

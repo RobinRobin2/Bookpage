@@ -15,7 +15,7 @@ if(isset($_GET['bookID'])){
 		$errorMessage = "No car has been chosen.";
 	}
 	if(isset($_POST['form-submit'])){
-		updateBook($conn, $_POST['edittitle'], $_POST['editagerecom'],  $_POST['editauthor'], $_POST['editillustrator'],  $_POST['editcategory'], $_POST['editgenre'], $bookData['Book_id']);
+		updateBook($conn, $_POST['edittitle'], $_POST['editagerecom'],  $_POST['editauthor'], $_POST['editillustrator'],  $_POST['editcategory'], $_POST['editgenre'], $_POST['editserie'], $_POST['editlanguage'], $_POST['editpubyear'], $_POST['editpublisher'], $_POST['editnumofpages'], $_POST['editprice'], $_FILES['editcover']['name'], $bookData['Book_id']);
 	}
 
 ?>
@@ -110,13 +110,83 @@ if(isset($_GET['bookID'])){
 		
 		?>
 </select><br>
+
+
+<label for="editserie">Serie:</label><br />
+	<select  name="editserie" id="editserie">
+		
+	<?php if(isset ($bookData['Series_name'])){
+		echo "<option value='{$bookData['Series_id']}'>Nuvarande: {$bookData['Series_name']}</option>";
+	}
+	    $allSeries = fetchSeries($conn);
+	    foreach($allSeries as $row){
+		echo "<option value='{$row['Series_id']}'>{$row['Series_name']}</option>";
+	
+	        }
+		
+		?>
+</select><br>
+
+
+
+<label for="editlanguage">Språk:</label><br />
+	<select  name="editlanguage" id="editlanguage">
+		
+	<?php if(isset ($bookData['Language_name'])){
+		echo "<option value='{$bookData['Language_id']}'>Nuvarande: {$bookData['Language_name']}</option>";
+	}
+	    $allLanguages = fetchLanguages($conn);
+	    foreach($allLanguages as $row){
+		echo "<option value='{$row['Language_id']}'>{$row['Language_name']}</option>";
+	
+	        }
+		
+		?>
+</select><br>
+	
 	
 
 
+	<label for="editpubyear">Utgiven:</label><br />
+	<input type="number" id="editpubyear" value="<?php if(isset ($bookData['Book_pubyear'])) {echo $bookData['Book_pubyear'];}?>" name="editpubyear" required="required"><br />
+
+
+
+
+
+	<label for="editpublisher">Förlag:</label><br />
+	<select  name="editpublisher" id="editpublisher">
+		
+	<?php if(isset ($bookData['Publisher_name'])){
+		echo "<option value='{$bookData['Publisher_id']}'>Nuvarande: {$bookData['Publisher_name']}</option>";
+	}
+	    $allPublisher = fetchPublisher($conn);
+	    foreach($allPublisher as $row){
+		echo "<option value='{$row['Publisher_id']}'>{$row['Publisher_name']}</option>";
 	
-	</select><br>
+	        }
+		
+		?>
+</select><br>
+
+
+
+
+	<label for="editnumofpages">Antal sidor:</label><br />
+	<input type="number" id="editnumofpages" value="<?php if(isset ($bookData['Book_numofpages'])) {echo $bookData['Book_numofpages'];}?>" name="editnumofpages" required="required"><br />
+
+
+	<label for="editprice">Pris:</label><br />
+	<input type="text" id="editprice" value="<?php if(isset ($bookData['Book_price'])) {echo $bookData['Book_price'];}?>" name="editprice" required="required"><br />
+	
+	
 	<label for="editrating">Betygsättning:</label><br />
 	<input type="text" id="editrating" value="<?php if(isset ($bookData['Book_rating'])) {echo $bookData['Book_rating'];}?>" name="editrating" required="required"><br />
+
+
+	<label for="editcover">Pärmblad:</label><br />
+	<input type="file" name="editcover" id="editcover" value="<?php if(isset ($bookData['Book_cover'] )) {echo $bookData['Book_cover'];}?>"><br>
+	
 
 	<input type="submit" name="form-submit" value="Skicka">
 

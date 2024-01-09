@@ -201,7 +201,8 @@ if(isset($_POST['submit_register'])){
 
 
     <label for="pubyear">Utgivningsår:</label><br />
-	<input type="date" id="pubyear" placeholder="" name="pubyear" required="required"><br />
+	<input type="number" id="pubyear" placeholder="" name="pubyear" required="required"><br />
+
 
     <label for="bpublisher">Förlag</label><br>
       <select name="bpublisher" id="bpublisher">
@@ -220,7 +221,7 @@ if(isset($_POST['submit_register'])){
 	<input type="number" id="numofpages" placeholder="" name="numofpages" required="required"><br />
 
     <label for="price">Pris:</label><br />
-	<input type="number" id="price" placeholder="" name="price" required="required"><br />
+	<input type="text" id="price" placeholder="" name="price" required="required"><br />
 
   <label for="brating">Betygsättning:</label><br />
 	<input type="text" id="brating" placeholder="" name="brating" required="required"><br />
