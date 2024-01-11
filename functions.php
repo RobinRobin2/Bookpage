@@ -35,6 +35,17 @@ function selectFeaturedBooks($conn, $amount){
 }
 
 
+function selectPopularCategory($conn, $amount){
+    $amount=intval($amount);
+    $selectedPopularCategory = $conn->prepare('SELECT * FROM table_categories 
+    WHERE Category_status = 1
+     LIMIT :amount ');	
+    $selectedPopularCategory->bindParam(':amount', $amount, PDO::PARAM_INT);
+    $selectedPopularCategory->execute();
+    return $selectedPopularCategory;
+}
+
+
 function createBook($conn, $title, $description, $author, $illustrator, $language, $pubyear, $numofpages, $price, $cover, $bcategory, $bgenre, $bseries, $bagerecom,  $bpublisher, $featured, $rating){
 		
         
@@ -63,10 +74,11 @@ function createBook($conn, $title, $description, $author, $illustrator, $languag
 	}
 
 
-    function createCategory($conn, $category){
+    function createCategory($conn, $category, $cstatus){
 		
-		$stmt_insertCategory = $conn->prepare("INSERT INTO table_categories (Category_name) VALUES (:category)");
+		$stmt_insertCategory = $conn->prepare("INSERT INTO table_categories (Category_name, Category_status) VALUES (:category, :cstatus)");
 		$stmt_insertCategory->bindParam(':category', $category, PDO::PARAM_STR);
+        $stmt_insertCategory->bindParam(':cstatus', $cstatus, PDO::PARAM_INT);
 
 		$stmt_insertCategory->execute();
 		
@@ -221,9 +233,9 @@ function createBook($conn, $title, $description, $author, $illustrator, $languag
 
 
 
-    function updateBook($conn, $title, $agerecomc, $authorc, $illustratorc, $categoryc, $genrec, $seriesc, $languagec, $pubyearc, $publisherc, $numofpagesc, $pricec, $coverc, $id){
+    function updateBook($conn, $title, $agerecomc, $authorc, $illustratorc, $categoryc, $genrec, $seriesc, $languagec, $pubyearc, $publisherc, $numofpagesc, $pricec, $featuredc, $coverc, $id){
 		
-        $stmt_insertOwner = $conn->prepare("UPDATE table_books  SET Book_title = :title, Book_agerecom_fk = :agerecomc, Book_author_fk = :authorc, Book_illustrator_fk = :illustratorc, Book_category_fk = :categoryc, Book_genre_fk = :genrec, Book_series_fk = :seriesc, Book_language_fk = :languagec, Book_pubyear = :pubyearc, Book_publisher_fk = :publisherc, Book_numofpages = :numofpagesc, Book_price = :pricec, Book_cover = :coverc WHERE Book_id = :bid");
+        $stmt_insertOwner = $conn->prepare("UPDATE table_books  SET Book_title = :title, Book_agerecom_fk = :agerecomc, Book_author_fk = :authorc, Book_illustrator_fk = :illustratorc, Book_category_fk = :categoryc, Book_genre_fk = :genrec, Book_series_fk = :seriesc, Book_language_fk = :languagec, Book_pubyear = :pubyearc, Book_publisher_fk = :publisherc, Book_numofpages = :numofpagesc, Book_price = :pricec, Book_featured = :featuredc, Book_cover = :coverc WHERE Book_id = :bid");
         $stmt_insertOwner->bindParam(':title', $title, PDO::PARAM_STR);
         $stmt_insertOwner->bindParam(':agerecomc', $agerecomc, PDO::PARAM_STR);
         $stmt_insertOwner->bindParam(':authorc', $authorc, PDO::PARAM_STR);
@@ -236,6 +248,7 @@ function createBook($conn, $title, $description, $author, $illustrator, $languag
         $stmt_insertOwner->bindParam(':publisherc', $publisherc, PDO::PARAM_STR);
         $stmt_insertOwner->bindParam(':numofpagesc', $numofpagesc, PDO::PARAM_INT);
         $stmt_insertOwner->bindParam(':pricec', $pricec, PDO::PARAM_STR);
+        $stmt_insertOwner->bindParam(':featuredc', $featuredc, PDO::PARAM_INT);
         $stmt_insertOwner->bindParam(':coverc', $coverc, PDO::PARAM_STR);
         $stmt_insertOwner->bindParam(':bid', $id, PDO::PARAM_INT);
         $stmt_insertOwner->execute();
@@ -243,6 +256,19 @@ function createBook($conn, $title, $description, $author, $illustrator, $languag
         $insertedOwnerId = $conn->lastInsertId();
         return $insertedOwnerId;
     }
+
+
+    function deleteBook($conn, $deleteid){
+        $stmt_deleteBook = $conn->prepare("DELETE FROM table_books WHERE Book_id = :deleteid");
+        $stmt_deleteBook->bindParam(':deleteid', $deleteid, PDO::PARAM_INT);
+        $stmt_deleteBook->execute();
+
+        $insertedOwnerId = $conn->lastInsertId();
+        return $insertedOwnerId;
+    }
+
+
+
 
 
 

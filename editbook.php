@@ -15,9 +15,20 @@ if(isset($_GET['bookID'])){
 		$errorMessage = "No car has been chosen.";
 	}
 	if(isset($_POST['form-submit'])){
-		updateBook($conn, $_POST['edittitle'], $_POST['editagerecom'],  $_POST['editauthor'], $_POST['editillustrator'],  $_POST['editcategory'], $_POST['editgenre'], $_POST['editserie'], $_POST['editlanguage'], $_POST['editpubyear'], $_POST['editpublisher'], $_POST['editnumofpages'], $_POST['editprice'], $_FILES['editcover']['name'], $bookData['Book_id']);
+		if(isset($_POST['featuredcheckedit'])){
+			$isFeatured = 1;
+		  }
+		  else {
+			$isFeatured = 0;
+		  }
+		updateBook($conn, $_POST['edittitle'], $_POST['editagerecom'],  $_POST['editauthor'], $_POST['editillustrator'],  $_POST['editcategory'], $_POST['editgenre'], $_POST['editserie'], $_POST['editlanguage'], $_POST['editpubyear'], $_POST['editpublisher'], $_POST['editnumofpages'], $_POST['editprice'], $isFeatured, $_FILES['editcover']['name'], $bookData['Book_id']);
 	}
 
+if(isset($_POST['form-delete'])){
+	$currentBook = $_GET['bookID'];
+
+	$bookData = deleteBook($conn, $currentBook, $bookData['Book_id']);
+}
 ?>
 
 <form method="post" action="" enctype="multipart/form-data">
@@ -184,6 +195,9 @@ if(isset($_GET['bookID'])){
 	<input type="text" id="editrating" value="<?php if(isset ($bookData['Book_rating'])) {echo $bookData['Book_rating'];}?>" name="editrating" required="required"><br />
 
 
+	<input type="checkbox" id="featuredcheckedit" name="featuredcheckedit" value="<?php if(isset ($bookData['Book_featured'] )) {echo $bookData['Book_featured'];}?>" >
+ 	<label for="featuredcheckedit">Featured</label><br>
+
 	<label for="editcover">Pärmblad:</label><br />
 	<input type="file" name="editcover" id="editcover" value="<?php if(isset ($bookData['Book_cover'] )) {echo $bookData['Book_cover'];}?>"><br>
 	
@@ -191,4 +205,10 @@ if(isset($_GET['bookID'])){
 	<input type="submit" name="form-submit" value="Skicka">
 
 </form>
+
+<form method="post"> 
+	<h3>Radera bok</h3>
+
+	<input type="submit" name="form-delete" value="<?php if(isset ($bookData['Book_id'] ))?>Radera bok">	
+		</form>
 

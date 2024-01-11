@@ -1,3 +1,7 @@
+
+
+</div> <!-- Close main-wrapper-->
+<div class="clear"></div>
 <footer>
 
 

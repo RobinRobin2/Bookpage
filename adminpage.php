@@ -25,7 +25,17 @@
 	}
 
     if(isset($_POST['category-submit'])){
-		createCategory($conn, $_POST['category']);
+      if(isset($_POST['popularcategory'])){
+        $isPopular = 1;
+      }
+      else {
+        $isPopular = 0;
+      }
+
+
+		createCategory($conn, $_POST['category'], $isPopular);
+
+
 
 	}
 
@@ -241,6 +251,10 @@ if(isset($_POST['submit_register'])){
             <h3>Skapa kategori</h3>
             <label for="category">Namn:</label><br />
 	        <input type="text" id="category" placeholder="" name="category" required="required"><br />
+
+          <input type="checkbox" id="popularcategory" name="popularcategory" value="1" >
+          <label for="popularcategory">Populär kategori</label><br>
+
             <input type="submit" name="category-submit" value="Skicka">
              </form>
              <form method="post" action="" enctype="multipart/form-data">

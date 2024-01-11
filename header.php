@@ -40,7 +40,7 @@
         <a class="nav-link" href="index.php">Hem <span class="sr-only"></span></a>
       </li>
       <li class="nav-item" id="test2">
-        <a class="nav-link" href="#">Böcker</a>
+        <a class="nav-link" href="books.php">Böcker</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">Om oss</a>
